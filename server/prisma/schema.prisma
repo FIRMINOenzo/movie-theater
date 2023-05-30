@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movies {
+  id         String @id @default(uuid())
+  name       String @unique
+  synopsis   String
+  duration   String
+  coverUrl   String
+  idGenre    String
+  idAudio    String
+  idRating   String
+  idLanguage String
+
+  Schedules Schedules[]
+
+  Genre    Genres    @relation(fields: [idGenre], references: [id])
+  Audio    Audios    @relation(fields: [idAudio], references: [id])
+  Rating   Ratings   @relation(fields: [idRating], references: [id])
+  Language Languages @relation(fields: [idLanguage], references: [id])
+}
+
+model Genres {
+  id   String @id @default(uuid())
+  name String @unique
+
+  Movies Movies[]
+}
+
+model Audios {
+  id   String @id @default(uuid())
+  name String @unique
+
+  Movies Movies[]
+}
+
+model Languages {
+  id   String @id @default(uuid())
+  name String @unique
+
+  Movies Movies[]
+}
+
+model Ratings {
+  id      String @id @default(uuid())
+  name    String @unique
+  acronym String @unique
+
+  Movies Movies[]
+}
+
+model Schedules {
+  id        String   @id @default(uuid())
+  date      DateTime
+  time      String
+  idTheater String
+  idMovie   String
+
+  Theather Theater @relation(fields: [idTheater], references: [id])
+  Movie    Movies  @relation(fields: [idMovie], references: [id])
+}
+
+model Theater {
+  id     String @id @default(uuid())
+  number String @unique
+  seats  Int
+
+  Schedules Schedules[]
+}
