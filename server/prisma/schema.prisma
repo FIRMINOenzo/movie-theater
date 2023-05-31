@@ -49,7 +49,6 @@ model Languages {
 
 model Ratings {
   id      String @id @default(uuid())
-  name    String @unique
   acronym String @unique
 
   Movies Movies[]
