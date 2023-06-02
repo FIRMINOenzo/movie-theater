@@ -1,8 +1,19 @@
 import fastify from "fastify";
+import cors from "@fastify/cors";
 
 import { moviesRoutes } from "./routes/movies";
+import { resolve } from "path";
 
 const app = fastify();
+
+app.register(cors, {
+  origin: true,
+});
+
+app.register(require("@fastify/static"), {
+  root: resolve(__dirname, "../public"),
+  prefix: "/public",
+});
 
 app.register(moviesRoutes);
 
